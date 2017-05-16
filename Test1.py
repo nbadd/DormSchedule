@@ -84,12 +84,29 @@ countweekend = 0
 with open('Schedule.csv', 'w') as f:
     writer = csv.writer(f)
     while (countyear < len(year)):
-        countweek = 0
-        while (countweek < len(week)):
-            week[countweek].insert(0,year[countyear])
-            writer.writerow(week[countweek])
-            week[countweek].remove(week[countweek][0])
-            countyear += 1
-            countweek += 1
-    year[5 + countweekend]
+        tempDay = 5
+        while (tempDay > 0):
+            countweek = 0
+
+            while (countweek < len(week)):
+                if countweek == 5:
+                    week[countweek].insert(0,year[countyear])
+                    week[countweek].extend(week[countweek - tempDay])
+                    if tempDay == 1:
+                        week[countweek].extend(floater)
+                        writer.writerow(week[countweek])
+                    else:
+                        writer.writerow(week[countweek])
+                    week[countweek] = []
+
+                    tempDay -= 1
+                    countyear +=1
+                else:
+                    week[countweek].insert(0,year[countyear])
+                    writer.writerow(week[countweek])
+                    week[countweek].remove(week[countweek][0])
+                    countyear += 1
+
+                countweek +=1
+
 f.close()
